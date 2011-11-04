@@ -1,6 +1,6 @@
 package File::Tee;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use strict;
 use warnings;
@@ -155,8 +155,9 @@ sub tee (*;@) {
             or return undef;
 
 	$SIG{INT} = 'IGNORE';
-
         undef @ARGV;
+        eval { $0 = "perl [File::Tee]" };
+
         my $error = 0;
 
         my $oldsel = select STDERR;
@@ -254,6 +255,7 @@ sub tee (*;@) {
     # close $teefh;
 
     $oldsel = select($fh);
+    no warnings 'once';
     ($|, $%, $=, $-, $~, $^, $.) = @oldstate;
     select($oldsel);
 
@@ -462,11 +464,11 @@ You could also want to set the tee'ed stream in autoflush mode:
 
 Does not work on Windows (patches welcome).
 
-This is alpha software, not very tested. Expect bugs on it.
-
 Send bug reports by email or via L<the CPAN RT web|https://rt.cpan.org>.
 
 =head1 SEE ALSO
+
+L<IO::Capture>
 
 L<IO::Tee> is a similar module implemented around tied file
 handles. L<Tee> allows to launch external processes capturing their
@@ -476,7 +478,7 @@ output generated from a child process or a subroutine.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007, 2008, 2010 by Salvador FandiE<ntilde>o
+Copyright (C) 2007, 2008, 2010, 2011 by Salvador FandiE<ntilde>o
 (sfandino@yahoo.com)
 
 This library is free software; you can redistribute it and/or modify

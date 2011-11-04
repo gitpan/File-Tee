@@ -43,7 +43,7 @@ for $l ("missing end of line...", "more data...", "end of line\n") {
     ok(print($tfh $l), "missing end of line - $l1");
     ok(print($cfh $l), "missing end of line - $l1 c");
     $out .= $l;
-    sleep 1;
+    sleep 3;
     ok(open my $meof, '<', 't/test_data');
     {
         local $/;
@@ -56,7 +56,7 @@ alarm 10;
 ok(close($tfh), "close tfh");
 alarm 0;
 
-sleep 1;
+sleep 3;
 
 ok(open $tfh, '<', 't/test_data');
 ok(open $cfh, '<', 't/test_control');
